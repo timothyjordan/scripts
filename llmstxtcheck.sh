@@ -12,7 +12,7 @@ fi
 if [ -x "$2" ]; then
   output_filename="llms.txt"
 else
-  output_filename=$2
+  output_filename="${2}.txt"
 fi
 
 # Download the file and extract all URLs
@@ -31,10 +31,10 @@ echo "$urls" | while read -r url; do
   code=$(curl -o /dev/null -s -w "%{http_code}" "$url")
   printf "[%3d/%3d] %s -> %s\n" "$count" "$total" "$url" "$code"
   if [ "$code" = "404" ]; then
-    echo "❌ 404: $url" >> "$output_filename" + ".txt"
+    echo "❌ 404: $url" >> $output_filename
     failcount=$((failcount + 1))
   fi
 done
 
 echo
-echo "Done. Found $failcount failed URLs. Any 404 URLs are saved in $output_filename.txt"
+echo "Done. Found $failcount failed URLs. Any 404 URLs are saved in $output_filename"
